@@ -1,0 +1,26 @@
+<table>
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Date Added</td>
+            <td>Size</td>
+            <td colspan="2">Actions</td>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (currentFolder.parentId) {%>
+            <a href="<%= currentFolder.parentId %>">../</a>
+        <%}%>
+        <% for (const folder of currentFolder.child) {%>
+            <tr>
+                <td  colspan="3">
+                    <a href="/folder/<%= folder.id %>">
+                        <%= folder.name %>
+                    </a>
+                </td>
+                <td><button>Delete</button></td>
+                <td><button>Rename</button></td>
+            </tr>
+        <%}%>
+    </tbody>
+</table>

@@ -20,17 +20,31 @@ model Session {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
+  id       Int      @id @default(autoincrement())
+  username String   @unique
   password String
-  files    File[]
+  folders  Folder[]
 }
 
 model File {
-  id     Int  @default(autoincrement())
-  userId Int  @unique
-  owner  User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  scope Scope @default(PRIVATE)
+  id       Int    @id @default(autoincrement())
+  name     String
+  scope    Scope  @default(PRIVATE)
+  folderId Int
+  folder   Folder @relation(fields: [folderId], references: [id])
+}
+
+model Folder {
+  id       Int      @id @default(autoincrement())
+  file     File[]
+  name     String
+  parentId Int?
+  parent   Folder?  @relation("parentFolder", fields: [parentId], references: [id], onDelete: Cascade)
+  child    Folder[] @relation("parentFolder")
+  ownerId  Int
+  owner    User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@unique([parentId, name, ownerId])
 }
 
 enum Scope {

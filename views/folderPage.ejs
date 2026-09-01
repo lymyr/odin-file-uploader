@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Files</title>
 </head>
 <body>
     <%- include('partials/header') %>
-    <% if (locals.user) {%>
-
-    <%} else {%>
-        <%- include('partials/loginForm') %>
-        <p>No account? Register <a href="/register">here</a></p>
-    <%}%>
+    <h1>hello <%= user.username %></h1>
+    <%- include('partials/fileForm') %>
+    <%- include('partials/folderForm') %>
+    <%- include('partials/folder') %>
 </body>
 </html>

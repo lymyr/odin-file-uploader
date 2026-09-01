@@ -3,12 +3,22 @@ import {registerValidation, loginValidation } from "../lib/validations.js"
 import {prisma} from "../lib/prisma.js"
 import bcrypt from "bcryptjs"
 import passport from "passport"
+import isAuth from "../middleware/isAuth.js"
 
-export const getIndex = (req, res) => {
-    if (req.isAuthenticated())
-        return res.render('index', {username: req.user.username})
-    res.render('index')
-}
+export const getIndex = [
+    isAuth,
+    async (req, res) => {
+        const root = await prisma.folder.findFirst({
+            where: {
+                ownerId: req.user.id,
+                parentId: null
+            },
+            include: { child: true }
+        })
+        req.rootFolder = root
+        res.redirect(`/folder/${root.id}`)
+    }
+]
 
 export const getRegister = (req, res) => {
     res.render('register')
@@ -23,7 +33,12 @@ export const register = [
             await prisma.user.create({
                 data: {
                     username: req.body.username,
-                    password: hashed
+                    password: hashed,
+                    folders: {
+                        create: {
+                            name: "root"
+                        }
+                    }
                 }
             })
             return res.render('index')
