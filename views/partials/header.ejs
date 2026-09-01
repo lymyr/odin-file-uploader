@@ -1,0 +1,10 @@
+<header>
+    <div>
+        <a href="/"><h1>Odin File Uploader</h1></a>
+    </div>
+    <% if (locals.username) {%>
+        <form method="post" action="/logout">
+            <button>Log out</button>
+        </form>
+    <% }%>
+</header>

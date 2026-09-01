@@ -1,0 +1,21 @@
+<form method="post" action="/login">
+    <div>
+        <div>
+            <label for="username">Username:</label>
+            <input id="username" name="username">
+        </div>
+        <% if (locals.errors && errors.username) {%>
+            <p class="form-error"><%= errors.username.msg %></p>
+        <%}%>
+    </div>
+    <div>
+        <div>
+            <label for="password">Password:</label>
+            <input id="password" name="password">
+        </div>
+        <% if (locals.errors && errors.password) {%>
+            <p class="form-error"><%= errors.password.msg %></p>
+        <%}%>
+    </div>
+    <button>Submit</button>
+</form>

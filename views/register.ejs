@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <%- include('partials/header') %>
+    <% const username = (locals.body && body.username) ? body.username : "" %>
+    <% const password = (locals.body && body.password) ? body.password : "" %>
+
+    <form method="post" action="/register">
+        <div>
+            <div>
+                <label for="username">Username:</label>
+                <input id="username" name="username" value="<%= username %>">
+            </div>
+            <% if (locals.errors && errors.username) {%>
+                <p class="form-error"><%= errors.username.msg %></p>
+            <%}%>
+        </div>
+        <div>
+            <div>
+                <label for="password">Password:</label>
+                <input id="password" name="password" value="<%= password %>">
+            </div>
+            <% if (locals.errors && errors.password) {%>
+                <p class="form-error"><%= errors.password.msg %></p>
+            <%}%>
+        </div>
+        <div>
+            <div>
+                <label for="cpassword">Confirm Password:</label>
+                <input id="cpassword" name="cpassword">
+            </div>
+            <% if (locals.errors && errors.cpassword) {%>
+                <p class="form-error"><%= errors.cpassword.msg %></p>
+            <%}%>
+        </div>
+        <button>Submit</button>
+    </form>
+</body>
+</html>
