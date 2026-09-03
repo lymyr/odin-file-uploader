@@ -1,0 +1,11 @@
+<% if (locals.files) {%>
+    <% for (const file of files) {%>
+        <tr>
+            <td><%= file.name %></td>
+            <td><%= file.uploadTime %></td>
+            <td><%= file.bytes %></td>
+            <td><button>Delete</button></td>
+            <td><button>Update</button></td>
+        </tr>
+    <%}%>
+<%}%>

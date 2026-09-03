@@ -27,27 +27,31 @@ model User {
 }
 
 model File {
-  id       Int    @id @default(autoincrement())
-  name     String
-  scope    Scope  @default(PRIVATE)
-  folderId Int
-  folder   Folder @relation(fields: [folderId], references: [id])
+  id         String   @id
+  name       String
+  uploadTime DateTime @default(now())
+  folderId   Int
+  bytes      Int
+  path       String
+  folder     Folder   @relation(fields: [folderId], references: [id])
 }
 
 model Folder {
-  id       Int      @id @default(autoincrement())
-  file     File[]
-  name     String
-  parentId Int?
-  parent   Folder?  @relation("parentFolder", fields: [parentId], references: [id], onDelete: Cascade)
-  child    Folder[] @relation("parentFolder")
-  ownerId  Int
-  owner    User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  id        Int        @id @default(autoincrement())
+  file      File[]
+  name      String
+  parentId  Int?
+  parent    Folder?    @relation("parentFolder", fields: [parentId], references: [id], onDelete: Cascade)
+  child     Folder[]   @relation("parentFolder")
+  ownerId   Int
+  owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  shareLink ShareLink?
 
   @@unique([parentId, name, ownerId])
 }
 
-enum Scope {
-  PUBLIC
-  PRIVATE
+model ShareLink {
+  id     Int      @id
+  expire DateTime
+  folder Folder   @relation(fields: [id], references: [id])
 }

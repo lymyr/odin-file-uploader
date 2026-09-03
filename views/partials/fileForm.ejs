@@ -1,4 +1,5 @@
 <form method="post" action="/file/upload" enctype="multipart/form-data">
+    <input name="currentFolder" value="<%= currentFolder.id %>" hidden>
     <div>
         <input type="file" name="files" multiple/>
     </div>

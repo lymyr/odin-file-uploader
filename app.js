@@ -6,6 +6,7 @@ import "./lib/authConfig.js"
 import passport from "passport";
 import indexRouter from "./routes/indexRouter.js";
 import folderRouter from "./routes/folderRouter.js";
+import fileRouter from "./routes/fileRouter.js";
 
 process.loadEnvFile()
 
@@ -18,6 +19,7 @@ app.use(passport.session())
 
 app.use('/', indexRouter)
 app.use('/folder', folderRouter)
+app.use('/file', fileRouter)
 
 app.listen(process.env.PORT, () => {
     console.log("Listening to " + process.env.PORT)
