@@ -1,0 +1,1 @@
+ALTER TABLE "Folder" ADD CONSTRAINT "Ouroboros" CHECK ("Folder"."parentId" != "Folder"."id");
