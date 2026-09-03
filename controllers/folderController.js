@@ -28,3 +28,15 @@ export const viewFolder = async (req, res) => {
 
     res.render('folderPage', {user: req.user, currentFolder: folder})
 }
+
+export const deleteFolder = async (req, res) => {
+    await prisma.folder.delete({
+        where: {
+            id: parseInt(req.body.delFold)
+        },
+        include: {
+            child: true
+        }
+    })
+    res.redirect(`/folder/${req.body.redirectId}`)
+}

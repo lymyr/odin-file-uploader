@@ -18,7 +18,13 @@
                         <%= folder.name %>
                     </a>
                 </td>
-                <td><button>Delete</button></td>
+                <td>
+                    <form action="/folder/delete" method="post">
+                        <input value="<%= folder.id %>" name='delFold' hidden>
+                        <input value="<%= currentFolder.id %>" name='redirectId' hidden>
+                        <button>Delete</button>
+                    </form>
+                </td>
                 <td><button>Rename</button></td>
             </tr>
         <%}%>
