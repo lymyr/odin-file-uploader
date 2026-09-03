@@ -14,19 +14,37 @@ export const addFolder = async (req, res) => {
 
 export const viewFolder = async (req, res) => {
     let folder = req.rootFolder
+    let updateFolder;
+    const concQueue = []
 
     if (!req.rootFolder) {
-        folder = await prisma.folder.findUnique({
+        concQueue.push(prisma.folder.findUnique({
             where: {
                 id: parseInt(req.params.id)
             },
             include: {
                 child: true
             }
-        })
-    }
+        }))
 
-    res.render('folderPage', {user: req.user, currentFolder: folder})
+        if (req.params.updateId) {
+            concQueue.push(prisma.folder.findUnique({
+                where: {
+                    id: parseInt(req.params.updateId)
+                }
+            }))
+        }
+
+        [folder, updateFolder] = await Promise.all(concQueue)
+    }
+    
+
+
+    res.render('folderPage', {
+        user: req.user, 
+        currentFolder: folder, 
+        updateFolder: updateFolder
+    })
 }
 
 export const deleteFolder = async (req, res) => {
@@ -39,4 +57,19 @@ export const deleteFolder = async (req, res) => {
         }
     })
     res.redirect(`/folder/${req.body.redirectId}`)
+}
+
+
+export const updateFolder = async (req, res) => {
+    await prisma.folder.update({
+        where: {
+            id: parseInt(req.body.updateId)
+        },
+        data: {
+            name: req.body.name,
+            parentId: parseInt(req.body.parentId)
+        }
+    })
+
+    res.redirect(`/folder/${req.body.parentId}`)
 }

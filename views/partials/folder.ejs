@@ -8,24 +8,35 @@
         </tr>
     </thead>
     <tbody>
+        <% const updateParentLink = locals.updateFolder ? `/update/${updateFolder.id}` : "" %>
         <% if (currentFolder.parentId) {%>
-            <a href="<%= currentFolder.parentId %>">../</a>
+            <a href="/folder/<%= currentFolder.parentId + updateParentLink %>">../</a>
         <%}%>
         <% for (const folder of currentFolder.child) {%>
+            <% const navLink = locals.updateFolder ? `/folder/${folder.id}/update/${updateFolder.id}` : `/folder/${folder.id}` %>
+            <% const cSpan = locals.updateFolder ? 5 : 3 %>
             <tr>
-                <td  colspan="3">
-                    <a href="/folder/<%= folder.id %>">
-                        <%= folder.name %>
-                    </a>
-                </td>
-                <td>
-                    <form action="/folder/delete" method="post">
-                        <input value="<%= folder.id %>" name='delFold' hidden>
-                        <input value="<%= currentFolder.id %>" name='redirectId' hidden>
-                        <button>Delete</button>
-                    </form>
-                </td>
-                <td><button>Rename</button></td>
+                <% if (locals.updateFolder?.id !== folder.id) { %>
+                    <td  colspan="<%= cSpan %>">
+                        <a href="<%= navLink %>">
+                            <%= folder.name %>
+                        </a>
+                    </td>
+                <%}%>
+                <% if (!locals.updateFolder) { %>
+                    <td>
+                        <form action="/folder/delete" method="post">
+                            <input value="<%= folder.id %>" name='delFold' hidden>
+                            <input value="<%= currentFolder.id %>" name='redirectId' hidden>
+                            <button>Delete</button>
+                        </form>
+                    </td>
+                    <td>
+                        <a href="/folder/<%= currentFolder.id %>/update/<%= folder.id %>">
+                            <button>Update</button>
+                        </a>
+                    </td>
+                <%}%>
             </tr>
         <%}%>
     </tbody>

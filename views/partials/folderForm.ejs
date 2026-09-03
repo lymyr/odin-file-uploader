@@ -1,8 +1,13 @@
-<form method="post" action="/folder/add" >
+<form method="post" action="/folder/<%= locals.updateFolder ? "update" : "add" %>" >
     <div>
         <input name="parentId" value="<%= currentFolder.id %>" hidden>
         <label>Folder name:</label>
-        <input name="name" />
+        <input name="name" 
+            value="<%= locals.updateFolder ? updateFolder.name : "" %>"
+        />
+        <% if (locals.updateFolder) {%>
+            <input name="updateId" value="<%=updateFolder.id%>" hidden>
+        <%}%>
     </div>
     <button>Add folder</button>
 </form>
