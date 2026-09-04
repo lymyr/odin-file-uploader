@@ -1,17 +1,22 @@
+<% const updateParentLink = locals.updateFolder ? `/update/${updateFolder.id}` : "" %>
+<% if (currentFolder.parentId) {%>
+    <h1>
+        <a href="/folder/<%= currentFolder.parentId + updateParentLink %>">../</a><%= currentFolder.name %>
+    </h1>
+<%} else {%>
+    <h1>/<%= currentFolder.name %></h1>
+<%}%>
+
 <table>
     <thead>
         <tr>
             <td>Name</td>
             <td>Date Added</td>
             <td>Size</td>
-            <td colspan="2">Actions</td>
+            <td colspan="3">Actions</td>
         </tr>
     </thead>
     <tbody>
-        <% const updateParentLink = locals.updateFolder ? `/update/${updateFolder.id}` : "" %>
-        <% if (currentFolder.parentId) {%>
-            <a href="/folder/<%= currentFolder.parentId + updateParentLink %>">../</a>
-        <%}%>
         <% for (const folder of currentFolder.child) {%>
             <% const navLink = locals.updateFolder ? `/folder/${folder.id}/update/${updateFolder.id}` : `/folder/${folder.id}` %>
             <% const cSpan = locals.updateFolder ? 5 : 3 %>
@@ -31,7 +36,7 @@
                             <button>Delete</button>
                         </form>
                     </td>
-                    <td>
+                    <td colspan="2">
                         <a href="/folder/<%= currentFolder.id %>/update/<%= folder.id %>">
                             <button>Update</button>
                         </a>

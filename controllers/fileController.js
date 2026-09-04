@@ -1,4 +1,6 @@
 import { prisma } from "../lib/prisma.js"
+import fs from 'node:fs/promises'
+import path from "node:path"
 
 export const uploadFile = async (req, res) => {
     const fileList = req.files.map(file => {
@@ -16,4 +18,17 @@ export const uploadFile = async (req, res) => {
     })
 
     res.redirect(`/folder/${req.body.currentFolder}`)
+}
+
+export const deleteFile = async (req, res) => {
+    try {
+        const q = []
+        q.push(fs.unlink(`${path.join(import.meta.dirname, `../uploads/${req.body.fileId}`)}`))
+        q.push(prisma.file.delete({where: {id: req.body.fileId}}))
+        await Promise.all(q)
+    }
+    catch(e) {
+        throw e
+    }
+    res.redirect(`/folder/${req.body.redirectId}`)
 }
