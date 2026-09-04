@@ -32,3 +32,7 @@ export const deleteFile = async (req, res) => {
     }
     res.redirect(`/folder/${req.body.redirectId}`)
 }
+
+export const downloadFile = async (req, res) => {
+    res.download(`${path.join(import.meta.dirname, `../uploads/${req.body.fileId}`)}`, req.body.fileName)
+}
