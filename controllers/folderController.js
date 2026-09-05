@@ -1,4 +1,5 @@
 import { prisma } from "../lib/prisma.js"
+import { deleteFolder as helperDeleteFolder } from "../lib/helpers.js"
 
 export const addFolder = async (req, res) => {
     // todo: add folder validation
@@ -9,7 +10,7 @@ export const addFolder = async (req, res) => {
             ownerId: req.user.id
         }
     })
-    res.redirect('/')
+    res.redirect(`/folder/${req.body.parentId}`)
 }
 
 export const viewFolder = async (req, res) => {
@@ -52,14 +53,7 @@ export const viewFolder = async (req, res) => {
 }
 
 export const deleteFolder = async (req, res) => {
-    await prisma.folder.delete({
-        where: {
-            id: parseInt(req.body.delFold)
-        },
-        include: {
-            child: true
-        }
-    })
+    await helperDeleteFolder(parseInt(req.body.delFold))
     res.redirect(`/folder/${req.body.redirectId}`)
 }
 
