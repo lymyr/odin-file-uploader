@@ -15,15 +15,8 @@ export const addFolder = async (req, res) => {
 export const viewFolder = async (req, res) => {
     let folder = req.rootFolder
     let updateFolder;
-    let files;
 
     const concQueue = []
-
-    concQueue.push(prisma.file.findMany({
-        where: {
-            folderId: parseInt(req.params.id)
-        }
-    }))
 
     if (!req.rootFolder) {
         concQueue.push(prisma.folder.findUnique({
@@ -31,7 +24,8 @@ export const viewFolder = async (req, res) => {
                 id: parseInt(req.params.id)
             },
             include: {
-                child: true
+                child: true,
+                file: true
             }
         }))
 
@@ -42,10 +36,8 @@ export const viewFolder = async (req, res) => {
                 }
             }))
         }
-        [files, folder, updateFolder] = await Promise.all(concQueue)
+        [folder, updateFolder] = await Promise.all(concQueue)
     }
-    else
-        [files] = await Promise.all(concQueue)
     
     // todo: perhaps add middleware to redirect
     if (folder.ownerId != req.user.id) {
@@ -56,7 +48,6 @@ export const viewFolder = async (req, res) => {
         user: req.user, 
         currentFolder: folder, 
         updateFolder: updateFolder,
-        files: files
     })
 }
 

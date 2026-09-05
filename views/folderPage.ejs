@@ -8,8 +8,12 @@
 <body>
     <%- include('partials/header') %>
     <h1>hello <%= user.username %></h1>
-    <%- include('partials/fileForm') %>
-    <%- include('partials/folderForm') %>
+    <% if (!locals.updateFile) {%>
+        <%- include('partials/fileForm') %>
+        <%- include('partials/folderForm') %>
+    <%} else {%>
+        <%- include('partials/updateFile') %>
+    <%}%>
     <%- include('partials/folder') %>
 </body>
 </html>

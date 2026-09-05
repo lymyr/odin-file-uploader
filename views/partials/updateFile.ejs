@@ -1,0 +1,12 @@
+<form action="/file/update" method="post">
+    <div>
+        <input name="id" value="<%= updateFile.id %>" hidden>
+        <input name="parentId" value="<%= currentFolder.id %>" hidden>
+        <label for="updateFileName">File Name:</label>
+        <input id="updateFileName" name="fileName" value="<%= updateFile.name %>">
+    </div>
+    <div>
+        <a href="/folder/<%= currentFolder.id %>"><button type="button">Cancel</button></a>
+        <button type="submit">Save</button>
+    </div>
+</form>

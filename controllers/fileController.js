@@ -36,3 +36,37 @@ export const deleteFile = async (req, res) => {
 export const downloadFile = async (req, res) => {
     res.download(`${path.join(import.meta.dirname, `../uploads/${req.body.fileId}`)}`, req.body.fileName)
 }
+
+export const redirectUpdate = async (req, res) => {
+    res.redirect(`/file/${req.body.redirectId}/${req.body.fileId}`)
+}
+
+export const viewUpdate = async (req, res) => {
+    const q = []
+    q.push(prisma.file.findFirstOrThrow({
+        where: {id: req.params.updateId}
+    }))
+    q.push(prisma.folder.findFirstOrThrow({
+        where: {id: parseInt(req.params.folderId)},
+        include: {child: true, file: true}
+    }))
+    const [updateFile, folder] = await Promise.all(q)
+
+    res.render('folderPage', {
+        user: req.user, 
+        currentFolder: folder, 
+        updateFile: updateFile
+    })
+}
+
+export const updateFile = async (req, res) => {
+    console.log("in")
+    await prisma.file.update({
+        where: {id: req.body.id},
+        data: {
+            name: req.body.fileName,
+            folderId: parseInt(req.body.parentId)
+        }
+    })
+    res.redirect(`/folder/${req.body.parentId}`)
+}

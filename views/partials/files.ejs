@@ -1,31 +1,35 @@
-<% if (locals.files) {%>
-    <% for (const file of files) {%>
-        <tr>
-            <td><%= file.name %></td>
-            <td><%= file.uploadTime %></td>
-            <td><%= file.bytes %></td>
-            <td>
-                <form action="/file/delete" method="post">
-                    <input name="fileId" value="<%= file.id %>" hidden>
-                    <input value="<%= currentFolder.id %>" name='redirectId' hidden>
-                    <button>Delete</button>
-                </form>
-            </td>
-            <td>
-                <form action="/file/update" method="post">
-                    <input name="fileId" value="<%= file.id %>" hidden>
-                    <input value="<%= currentFolder.id %>" name='redirectId' hidden>
-                    <button>Update</button>
-                </form>
-            </td>
-            <td>
-                <form action="/file/download" method="post">
-                    <input name="fileId" value="<%= file.id %>" hidden>
-                    <input name="fileName" value="<%= file.name %>" hidden>
-                    <input value="<%= currentFolder.id %>" name='redirectId' hidden>
-                    <button>Download</button>
-                </form>
-            </td>
-        </tr>
+<% if (currentFolder.file) {%>
+    <% for (const file of currentFolder.file) {%>
+        <% if (locals.updateFile?.name != file.name) {%>
+            <tr>
+                <td><%= file.name %></td>
+                <td><%= file.uploadTime %></td>
+                <td><%= file.bytes %></td>
+                <% if (!locals.updateFile) {%>
+                    <td>
+                        <form action="/file/delete" method="post">
+                            <input name="fileId" value="<%= file.id %>" hidden>
+                            <input value="<%= currentFolder.id %>" name='redirectId' hidden>
+                            <button>Delete</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/file/redirect/update" method="post">
+                            <input name="fileId" value="<%= file.id %>" hidden>
+                            <input value="<%= currentFolder.id %>" name='redirectId' hidden>
+                            <button>Update</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/file/download" method="post">
+                            <input name="fileId" value="<%= file.id %>" hidden>
+                            <input name="fileName" value="<%= file.name %>" hidden>
+                            <button>Download</button>
+                        </form>
+                    </td>
+                <%}%>
+            </tr>
+        <%}%>
+        
     <%}%>
 <%}%>

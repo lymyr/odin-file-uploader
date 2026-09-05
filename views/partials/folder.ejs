@@ -1,7 +1,8 @@
-<% const updateParentLink = locals.updateFolder ? `/update/${updateFolder.id}` : "" %>
+<% let parentLink = locals.updateFolder ? `/folder/${currentFolder.parentId}/update/${updateFolder.id}` : locals.updateFile ? `/file/${currentFolder.parentId}/${updateFile.id}` : `/folder/${currentFolder.parentId}` %>
+
 <% if (currentFolder.parentId) {%>
     <h1>
-        <a href="/folder/<%= currentFolder.parentId + updateParentLink %>">../</a><%= currentFolder.name %>
+        <a href="<%= parentLink %>">../</a><%= currentFolder.name %>
     </h1>
 <%} else {%>
     <h1>/<%= currentFolder.name %></h1>
@@ -13,12 +14,14 @@
             <td>Name</td>
             <td>Date Added</td>
             <td>Size</td>
-            <td colspan="3">Actions</td>
+            <% if (!locals.updateFile) {%>
+                <td colspan="3">Actions</td>
+            <%}%>
         </tr>
     </thead>
     <tbody>
         <% for (const folder of currentFolder.child) {%>
-            <% const navLink = locals.updateFolder ? `/folder/${folder.id}/update/${updateFolder.id}` : `/folder/${folder.id}` %>
+            <% const navLink = locals.updateFolder ? `/folder/${folder.id}/update/${updateFolder.id}` : locals.updateFile ? `/file/${folder.id}/${updateFile.id}` : `/folder/${folder.id}` %>
             <% const cSpan = locals.updateFolder ? 5 : 3 %>
             <tr>
                 <% if (locals.updateFolder?.id !== folder.id) { %>
@@ -28,7 +31,7 @@
                         </a>
                     </td>
                 <%}%>
-                <% if (!locals.updateFolder) { %>
+                <% if (!locals.updateFolder || !locals.updateFile) { %>
                     <td>
                         <form action="/folder/delete" method="post">
                             <input value="<%= folder.id %>" name='delFold' hidden>
