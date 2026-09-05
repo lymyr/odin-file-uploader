@@ -6,11 +6,11 @@ const folderRouter = Router()
 
 folderRouter.use(isAuth)
 
-folderRouter.post("/add", addFolder)
+folderRouter.post("/add", addFolder, viewFolder)
 folderRouter.get("/:id", viewFolder)
 folderRouter.post('/delete', deleteFolder)
 folderRouter.get('/:id/update/:updateId', viewFolder)
-folderRouter.post('/update', updateFolder)
+folderRouter.post('/update', updateFolder, viewFolder)
 
 
 export default folderRouter

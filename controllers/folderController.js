@@ -3,10 +3,9 @@ import { deleteFolder as helperDeleteFolder } from "../lib/helpers.js"
 import { folderValidation } from "../lib/validations.js"
 import { validationResult } from "express-validator"
 
-// wip
 export const addFolder = [
     folderValidation.validName,
-    async (req, res) => {
+    async (req, res, next) => {
         const err = validationResult(req)
 
         if (err.isEmpty()) {
@@ -17,9 +16,9 @@ export const addFolder = [
                     ownerId: req.user.id
                 }
             })
-            
-        }
-        res.redirect(`/folder/${req.body.parentId}`)
+        } else
+            req.errors = err.mapped()
+        next()
     }
 ]
 
@@ -29,10 +28,11 @@ export const viewFolder = async (req, res) => {
 
     const concQueue = []
 
+    let id = req.body?.parentId || req.params.id
     if (!req.rootFolder) {
         concQueue.push(prisma.folder.findUnique({
             where: {
-                id: parseInt(req.params.id)
+                id: parseInt(id)
             },
             include: {
                 child: true,
@@ -59,6 +59,7 @@ export const viewFolder = async (req, res) => {
         user: req.user, 
         currentFolder: folder, 
         updateFolder: updateFolder,
+        errors: req.errors
     })
 }
 
@@ -70,7 +71,7 @@ export const deleteFolder = async (req, res) => {
 
 export const updateFolder = [
     folderValidation.validName,
-    async (req, res) => {
+    async (req, res, next) => {
         const err = validationResult(req)
         if (err.isEmpty()) {
             await prisma.folder.update({
@@ -82,7 +83,8 @@ export const updateFolder = [
                     parentId: parseInt(req.body.parentId)
                 }
             })
-        }
-        res.redirect(`/folder/${req.body.parentId}`)
+        } else 
+            req.errors = err.mapped()
+        next()
     }
 ]

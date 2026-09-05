@@ -9,5 +9,8 @@
             <input name="updateId" value="<%=updateFolder.id%>" hidden>
         <%}%>
     </div>
-    <button>Add folder</button>
+    <div><button>Add folder</button></div>
+    <% if (locals.errors && errors.name) {%>
+        <p class="form-error"><%= errors.name.msg %></p>
+    <%}%>
 </form>
