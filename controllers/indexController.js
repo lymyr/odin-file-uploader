@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator"
-import {registerValidation, loginValidation } from "../lib/validations.js"
+import { usernamePasswordValidation } from "../lib/validations.js"
 import {prisma} from "../lib/prisma.js"
 import bcrypt from "bcryptjs"
 import passport from "passport"
@@ -25,7 +25,7 @@ export const getRegister = (req, res) => {
 }
 
 export const register = [
-    registerValidation,
+    usernamePasswordValidation.registerValidation,
     async (req, res) => {
         const errs = validationResult(req)
         if (errs.isEmpty()) {
@@ -48,7 +48,7 @@ export const register = [
 ]
 
 export const login = [
-    loginValidation,
+    usernamePasswordValidation.loginValidation,
     async (req, res, next) => {
         const errs = validationResult(req)
         if (errs.isEmpty())

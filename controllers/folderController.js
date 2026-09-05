@@ -1,17 +1,27 @@
 import { prisma } from "../lib/prisma.js"
 import { deleteFolder as helperDeleteFolder } from "../lib/helpers.js"
+import { folderValidation } from "../lib/validations.js"
+import { validationResult } from "express-validator"
 
-export const addFolder = async (req, res) => {
-    // todo: add folder validation
-    const folder = await prisma.folder.create({
-        data: {
-            name: req.body.name,
-            parentId: parseInt(req.body.parentId),
-            ownerId: req.user.id
+// wip
+export const addFolder = [
+    folderValidation.validName,
+    async (req, res) => {
+        const err = validationResult(req)
+
+        if (err.isEmpty()) {
+            await prisma.folder.create({
+                data: {
+                    name: req.body.name,
+                    parentId: parseInt(req.body.parentId),
+                    ownerId: req.user.id
+                }
+            })
+            
         }
-    })
-    res.redirect(`/folder/${req.body.parentId}`)
-}
+        res.redirect(`/folder/${req.body.parentId}`)
+    }
+]
 
 export const viewFolder = async (req, res) => {
     let folder = req.rootFolder
@@ -58,16 +68,21 @@ export const deleteFolder = async (req, res) => {
 }
 
 
-export const updateFolder = async (req, res) => {
-    await prisma.folder.update({
-        where: {
-            id: parseInt(req.body.updateId)
-        },
-        data: {
-            name: req.body.name,
-            parentId: parseInt(req.body.parentId)
+export const updateFolder = [
+    folderValidation.validName,
+    async (req, res) => {
+        const err = validationResult(req)
+        if (err.isEmpty()) {
+            await prisma.folder.update({
+                where: {
+                    id: parseInt(req.body.updateId)
+                },
+                data: {
+                    name: req.body.name,
+                    parentId: parseInt(req.body.parentId)
+                }
+            })
         }
-    })
-
-    res.redirect(`/folder/${req.body.parentId}`)
-}
+        res.redirect(`/folder/${req.body.parentId}`)
+    }
+]
