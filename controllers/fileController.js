@@ -1,5 +1,4 @@
 import { prisma } from "../lib/prisma.js"
-import fs from 'node:fs/promises'
 import path from "node:path"
 import { deleteFileTask } from "../lib/helpers.js"
 
