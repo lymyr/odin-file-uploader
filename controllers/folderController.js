@@ -5,7 +5,7 @@ import { validationResult } from "express-validator"
 
 export const addFolder = [
     folderValidation.validName,
-    async (req, res, next) => {
+    async (req, res) => {
         const err = validationResult(req)
 
         if (err.isEmpty()) {
@@ -16,45 +16,23 @@ export const addFolder = [
                     ownerId: req.user.id
                 }
             })
-        } else
-            req.errors = err.mapped()
+            return res.redirect(`/folder/${req.body.parentId}`)
+        } 
+
+        req.errors = err.mapped()
         next()
     }
 ]
 
 export const viewFolder = async (req, res) => {
-    let folder = req.rootFolder
-    let updateFolder;
-
-    const concQueue = []
-
-    let id = req.body?.parentId || req.params.id
-    if (!req.rootFolder) {
-        concQueue.push(prisma.folder.findUnique({
+    const folder = req.currentFolder
+    const updateId = req.params.updateId ? req.params.updateId : req.updateId ? req.updateId : null
+    const updateFolder =  updateId ? await prisma.folder.findUnique({
             where: {
-                id: parseInt(id)
-            },
-            include: {
-                child: true,
-                file: true
+                id: parseInt(updateId)
             }
-        }))
-
-        if (req.params.updateId) {
-            concQueue.push(prisma.folder.findUnique({
-                where: {
-                    id: parseInt(req.params.updateId)
-                }
-            }))
-        }
-        [folder, updateFolder] = await Promise.all(concQueue)
-    }
-    
-    // todo: perhaps add middleware to redirect
-    if (folder.ownerId != req.user.id) {
-        return res.redirect('/')
-    }
-
+        }) : null
+        
     res.render('folderPage', {
         user: req.user, 
         currentFolder: folder, 
@@ -83,8 +61,11 @@ export const updateFolder = [
                     parentId: parseInt(req.body.parentId)
                 }
             })
-        } else 
-            req.errors = err.mapped()
+            return res.redirect(`/folder/${req.body.parentId}`)
+        }
+
+        req.errors = err.mapped()
+        req.updateId = req.body.updateId
         next()
     }
 ]

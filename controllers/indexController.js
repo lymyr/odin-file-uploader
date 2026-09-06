@@ -7,16 +7,16 @@ import isAuth from "../middleware/isAuth.js"
 
 export const getIndex = [
     isAuth,
-    async (req, res) => {
+    async (req, res, next) => {
         const root = await prisma.folder.findFirst({
             where: {
                 ownerId: req.user.id,
                 parentId: null
             },
-            include: { child: true }
+            include: { child: true, file: true }
         })
-        req.rootFolder = root
-        res.redirect(`/folder/${root.id}`)
+        req.currentFolder = root
+        next()
     }
 ]
 

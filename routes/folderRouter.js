@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { addFolder, deleteFolder, updateFolder, viewFolder } from "../controllers/folderController.js";
 import isAuth from "../middleware/isAuth.js";
+import isOwner from "../middleware/isOwner.js";
 
 const folderRouter = Router()
 
-folderRouter.use(isAuth)
+folderRouter.use('/{:id}', isAuth, isOwner)
 
 folderRouter.post("/add", addFolder, viewFolder)
 folderRouter.get("/:id", viewFolder)
