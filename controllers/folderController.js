@@ -27,9 +27,10 @@ export const addFolder = [
 export const viewFolder = async (req, res) => {
     const folder = req.currentFolder
     const updateId = req.params.updateId ? req.params.updateId : req.updateId ? req.updateId : null
-    const updateFolder =  updateId ? await prisma.folder.findUnique({
+    const updateFolder =  updateId ? await prisma.folder.findFirstOrThrow({
             where: {
-                id: parseInt(updateId)
+                id: parseInt(updateId),
+                ownerId: req.user.id
             }
         }) : null
         
@@ -54,7 +55,8 @@ export const updateFolder = [
         if (err.isEmpty()) {
             await prisma.folder.update({
                 where: {
-                    id: parseInt(req.body.updateId)
+                    id: parseInt(req.body.updateId),
+                    ownerId: req.user.id
                 },
                 data: {
                     name: req.body.name,
