@@ -9,4 +9,7 @@
         <a href="/folder/<%= currentFolder.id %>"><button type="button">Cancel</button></a>
         <button type="submit">Save</button>
     </div>
+    <% if (locals.errors && errors.files) {%>
+        <p class="form-error"> <%= errors.files.msg %></p>
+    <%}%>
 </form>
