@@ -1,6 +1,19 @@
 import { prisma } from "../lib/prisma.js"
 
 export default async function (req, res, next) {
+    if (req.body?.fileId) {
+        const file = await prisma.file.findFirst({
+            where: {
+                id: req.body.fileId,
+                folder: {
+                    ownerId: req.user.id
+                }
+            }
+        })
+        if (file == null)
+            throw new Error("Please don't touch other people's files")
+    }
+
     if (!req.currentFolder) {
         const id = req.body?.parentId || req.body?.redirectId || req.params.id || req.params.folderId
         req.currentFolder = await prisma.folder.findUnique({
@@ -9,7 +22,8 @@ export default async function (req, res, next) {
             },
             include: {
                 child: true,
-                file: true
+                file: true,
+                shareLink: true
             }
         })
 
