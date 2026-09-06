@@ -23,6 +23,7 @@
                     <td>
                         <form action="/file/download" method="post">
                             <input name="fileId" value="<%= file.id %>" hidden>
+                            <input name="parentId" value="<%= currentFolder.id %>" hidden>
                             <input name="fileName" value="<%= file.name %>" hidden>
                             <button>Download</button>
                         </form>

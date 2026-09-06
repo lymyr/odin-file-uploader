@@ -5,7 +5,7 @@ import { validationResult } from "express-validator"
 
 export const addFolder = [
     folderValidation.validName,
-    async (req, res) => {
+    async (req, res, next) => {
         const err = validationResult(req)
 
         if (err.isEmpty()) {
