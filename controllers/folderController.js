@@ -25,7 +25,16 @@ export const addFolder = [
 ]
 
 export const viewFolder = async (req, res) => {
-    const folder = req.currentFolder
+    const folder = req.currentFolder ? req.currentFolder : await prisma.folder.findFirstOrThrow({ 
+        where: {
+            parentId: null,
+            ownerId: req.user.id
+        },
+        include: {
+            child: true,
+            file: true
+        }
+    })
     const updateId = req.params.updateId ? req.params.updateId : req.updateId ? req.updateId : null
     const updateFolder =  updateId ? await prisma.folder.findFirstOrThrow({
             where: {

@@ -1,13 +1,16 @@
 import { Router } from "express";
 import { deleteFile, downloadFile, fileError, redirectUpdate, updateFile, uploadFile, viewUpdate } from "../controllers/fileController.js";
-import multer from "multer";
 import { viewFolder } from "../controllers/folderController.js";
+import isOwner from "../middleware/isOwner.js";
+import isAuth from "../middleware/isAuth.js";
+import multer from "../lib/multer.js";
 
 const fileRouter = Router()
 
-const uploadMiddleware = multer({ dest: 'uploads/', limits: { fileSize: 5000000 } })
+fileRouter.use('/{:folderId}{/:updateId}', isAuth) 
 
-fileRouter.post('/upload', uploadMiddleware.array('files', 3), uploadFile, viewFolder)
+fileRouter.post('/upload', multer.array('files', 3), uploadFile, viewFolder)
+fileRouter.use(isOwner)
 fileRouter.post('/delete', deleteFile)
 fileRouter.post('/download', downloadFile)
 fileRouter.post('/redirect/update', redirectUpdate)

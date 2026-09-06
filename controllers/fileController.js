@@ -43,18 +43,17 @@ export const redirectUpdate = async (req, res) => {
 export const viewUpdate = async (req, res, next) => {
     if (req.errors && !req.errors.update)
         return next()
-    const fileId = req.body?.id ? req.body.id : req.params.updateId
-    const folderId = req.body?.parentId ? req.body.parentId : req.params.folderId
 
-    const q = []
-    q.push(prisma.file.findFirstOrThrow({
-        where: {id: fileId}
-    }))
-    q.push(prisma.folder.findFirstOrThrow({
-        where: {id: parseInt(folderId)},
-        include: {child: true, file: true}
-    }))
-    const [updateFile, folder] = await Promise.all(q)
+    const fileId = req.body?.id ? req.body.id : req.params.updateId
+    const folder = req.currentFolder
+    const updateFile = await prisma.file.findFirstOrThrow({
+        where: {
+            id: fileId,
+            folder: {
+                ownerId: req.user.id
+            }
+        }
+    })
 
     res.render('folderPage', {
         user: req.user, 
