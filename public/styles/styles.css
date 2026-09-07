@@ -1,0 +1,115 @@
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+    --inline-space: 32px;
+}
+
+input:not([type="file"]) {
+    max-width: 200px;
+}
+
+body {
+    background-color: rgb(245, 245, 245);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px var(--inline-space);
+}
+
+header > div {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.form-wrapper {
+    margin-bottom: 42px;
+    display: flex;
+    flex-direction: column;
+    gap:16px;
+    padding-inline: var(--inline-space);
+    flex-wrap: wrap;
+}
+
+.form-wrapper form > div {
+    display: flex;
+    flex-direction: column;
+    gap:4px;
+}
+
+.form-error {
+    color: rgb(194, 5, 5);
+    font-size: 0.85rem;
+}
+
+main {
+    padding-inline: var(--inline-space);
+}
+
+table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+table button {
+    width: 100%;
+    font-size: 0.75rem;
+}
+
+td, th {
+    padding: 2px 4px;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    
+}
+
+thead {
+    font-size: 0.9rem;
+    color: gray;
+}
+th {
+    border-bottom: 1px solid gray;
+    font-weight: 800;
+}
+
+th.name {
+    width: 50%;
+}
+
+th.date-added {
+    width: 25%
+}
+
+.name {
+    text-overflow: ellipsis;
+}
+
+td:not(.name) {
+    color: gray;
+    font-size: 0.9rem;
+}
+
+td.size {
+    text-align: right;
+}
+
+
+@media screen and (max-width: 600px) {
+    th.name {
+        width: 30%;
+    }
+
+    .button-td {
+        padding-inline: 1px;
+    }
+
+    .button-td button {
+        font-size: 0.7rem;
+        height: 100%;
+        padding-block: 8px
+    }
+}

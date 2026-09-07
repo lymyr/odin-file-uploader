@@ -4,18 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Files</title>
+    <link rel="stylesheet" href="/styles/reset.css">
+    <link rel="stylesheet" href="/styles/styles.css">
 </head>
 <body>
     <%- include('partials/header') %>
-    <% if (locals.user) {%> 
+    <% if (locals.user) {%>
         <% if (!locals.updateFile) {%>
-            <%- include('partials/fileForm') %>
-            <%- include('partials/folderForm') %>
-            <%- include('partials/dateForm') %>
+            <div class="form-wrapper">
+                <%- include('partials/fileForm') %>
+                <%- include('partials/folderForm') %>
+                <%- include('partials/dateForm') %>
+            </div>
         <%} else {%>
-            <%- include('partials/updateFile') %>
+            <div class="form-wrapper"><%- include('partials/updateFile') %></div>
         <%}%>
     <%}%>
-    <%- include('partials/folder') %>
+    <main>
+        <%- include('partials/folder') %>
+    </main>
 </body>
 </html>
