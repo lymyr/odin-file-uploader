@@ -1,10 +1,13 @@
-<form method="post" action="/file/upload" enctype="multipart/form-data">
-    <input name="parentId" value="<%= currentFolder.id %>" hidden>
-    <div>
-        <input type="file" name="files" multiple/>
-    </div>
-    <button>Upload Files</button>
-    <% if (locals.errors && errors.files) {%>
-        <p class="form-error"> <%= errors.files.msg %></p>
-    <%}%>
-</form>
+<div>
+    <h3>Upload File</h3>
+    <form method="post" action="/file/upload" enctype="multipart/form-data">
+        <input name="parentId" value="<%= currentFolder.id %>" hidden>
+        <div>
+            <input type="file" name="files" multiple/>
+        </div>
+        <button>Upload Files</button>
+        <% if (locals.errors && errors.files) {%>
+            <p class="form-error"> <%= errors.files.msg %></p>
+        <%}%>
+    </form>
+</div>

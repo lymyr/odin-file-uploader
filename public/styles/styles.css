@@ -18,6 +18,11 @@ header {
     padding: 16px var(--inline-space);
 }
 
+header a {
+    color: black;
+    text-decoration: none;
+}
+
 header > div {
     display: flex;
     gap: 12px;
@@ -25,12 +30,23 @@ header > div {
 }
 
 .form-wrapper {
-    margin-bottom: 42px;
-    display: flex;
-    flex-direction: column;
-    gap:16px;
+    margin-block: 42px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap:24px;
     padding-inline: var(--inline-space);
     flex-wrap: wrap;
+}
+
+.form-wrapper h3 {
+    margin-bottom: 24px;
+}
+
+.form-wrapper > div {
+    padding: 16px 12px;
+    box-shadow: 1px 1px 4px rgb(211, 211, 211);
+    border-radius: 2px;
+    background-color: white;
 }
 
 .form-wrapper form > div {
@@ -39,13 +55,30 @@ header > div {
     gap:4px;
 }
 
+.form-wrapper button {
+    margin-top: 12px;
+}
+
+.form-wrapper #make-priv-btn {
+    margin-bottom: 20px;
+}
+
+.form-share-wrapper {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+}
+
 .form-error {
     color: rgb(194, 5, 5);
     font-size: 0.85rem;
 }
 
 main {
-    padding-inline: var(--inline-space);
+    margin-inline: var(--inline-space);
+    background-color: white;
+    box-shadow: 1px 1px 4px rgb(211, 211, 211);
+    padding: 16px 12px;
 }
 
 table {
@@ -97,8 +130,19 @@ td.size {
     text-align: right;
 }
 
+td.name a {
+    color: rgb(22, 87, 141);
+    font-weight: 600;
+}
 
-@media screen and (max-width: 600px) {
+
+@media screen and (max-width: 1200px) { 
+    .form-wrapper > div:last-child {
+        grid-column: 1/3;
+    }
+}
+
+@media screen and (max-width: 660px) {
     th.name {
         width: 30%;
     }
@@ -111,5 +155,15 @@ td.size {
         font-size: 0.7rem;
         height: 100%;
         padding-block: 8px
+    }
+
+    header h1 {
+        font-size: 1.4rem;
+    }
+}
+
+@media screen and (max-width: 486px) {
+    .form-wrapper > div:last-child {
+        grid-column: 1/2;
     }
 }

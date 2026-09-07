@@ -36,10 +36,6 @@ export const downloadFile = async (req, res) => {
     res.download(`${path.join(import.meta.dirname, `../uploads/${req.body.fileId}`)}`, req.body.fileName)
 }
 
-export const redirectUpdate = async (req, res) => {
-    res.redirect(`/file/${req.body.redirectId}/${req.body.fileId}`)
-}
-
 export const viewUpdate = async (req, res, next) => {
     if (req.errors && !req.errors.update)
         return next()

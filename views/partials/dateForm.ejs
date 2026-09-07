@@ -1,21 +1,28 @@
 <div>
-    <% if (currentFolder.shareLink) {%>
-        <p>Public share link: <a href="<%= `${host}/share/${currentFolder.id}` %>"><%= `${host}/share/${currentFolder.id}` %></a></p>
-        <form action="/folder/unshare" method="post">
-            <input value="<%= currentFolder.id %>" name='redirectId' hidden>
-            <button>Make private</button>
-        </form>
-    <%}%>
-    <!-- todo: should prob add js to get client timezone but eh~ -->
-    <form action="/folder/share" method="post">
-        <input value="<%= currentFolder.id %>" name='redirectId' hidden>
-        <div>
-            <label for="share-duration">Share duration: </label>
-            <input id="share-duration" type="date" name="shareDuration">
-        </div>
-        <button>Share Folder</button>
-        <% if (locals.errors && errors.shareDuration) {%>
-            <p class="form-error"><%= errors.shareDuration.msg %></p>
+    <h3>Share a Folder</h3>
+    <div class="form-share-wrapper">
+        <% if (currentFolder.shareLink) {%>
+            <div>
+                <p>Public share link:</p>
+                <a class='share-link' href="<%= `${host}/share/${currentFolder.id}` %>"><%= `${host}/share/${currentFolder.id}` %></a>
+                <form action="/folder/unshare" method="post">
+                    <input value="<%= currentFolder.id %>" name='redirectId' hidden>
+                    <button id="make-priv-btn">Make private</button>
+                </form>
+            </div>
         <%}%>
-    </form>
+
+        <!-- todo: should prob add js to get client timezone but eh~ -->
+        <form action="/folder/share" method="post">
+            <input value="<%= currentFolder.id %>" name='redirectId' hidden>
+            <div>
+                <label for="share-duration">Share duration: </label>
+                <input id="share-duration" type="date" name="shareDuration">
+            </div>
+            <button>Share Folder</button>
+            <% if (locals.errors && errors.shareDuration) {%>
+                <p class="form-error"><%= errors.shareDuration.msg %></p>
+            <%}%>
+        </form>
+    </div>
 </div>

@@ -1,15 +1,16 @@
-<form action="/file/update" method="post">
-    <div>
-        <input name="id" value="<%= updateFile.id %>" hidden>
-        <input name="parentId" value="<%= currentFolder.id %>" hidden>
-        <label for="updateFileName">File Name:</label>
-        <input id="updateFileName" name="fileName" value="<%= updateFile.name %>">
-    </div>
-    <div>
+<div>
+    <h3>Update File</h3>
+    <form action="/file/update" method="post">
+        <div>
+            <input name="id" value="<%= updateFile.id %>" hidden>
+            <input name="parentId" value="<%= currentFolder.id %>" hidden>
+            <label for="updateFileName">File Name:</label>
+            <input id="updateFileName" name="fileName" value="<%= updateFile.name %>">
+        </div>
         <a href="/folder/<%= currentFolder.id %>"><button type="button">Cancel</button></a>
         <button type="submit">Save</button>
-    </div>
-    <% if (locals.errors && errors.files) {%>
-        <p class="form-error"> <%= errors.files.msg %></p>
-    <%}%>
-</form>
+        <% if (locals.errors && errors.files) {%>
+            <p class="form-error"> <%= errors.files.msg %></p>
+        <%}%>
+    </form>
+</div>

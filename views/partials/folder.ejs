@@ -15,7 +15,7 @@
             <th class="name">Name</th>
             <th class="date">Date Added</th>
             <th class="size">Size</th>
-            <% if (!locals.updateFile) {%>
+            <% if (!locals.updateFile && !locals.updateFolder) {%>
                 <th colspan="3" class="actions">Actions</th>
             <%}%>
         </tr>
@@ -24,16 +24,14 @@
         <% if (currentFolder.child) {%>
             <% for (const folder of currentFolder.child) {%>
                 <% const navLink = locals.updateFolder ? `/folder/${folder.id}/update/${updateFolder.id}` : locals.updateFile ? `/file/${folder.id}/${updateFile.id}` : `/folder/${folder.id}` %>
-                <% const cSpan = locals.updateFolder ? 4 : 3 %>
                 <% if (locals.updateFolder?.id !== folder.id) { %>
-                    <tr class="folder-row">
-                        
-                            <td  colspan="<%= cSpan %>" class="name">
+                    <tr class="folder-row"> 
+                            <td  colspan="3" class="name">
                                 <a href="<%= navLink %>">
                                     <%= folder.name %>
                                 </a>
                             </td>
-                        <% if (!locals.updateFolder || !locals.updateFile) { %>
+                        <% if (!locals.updateFolder && !locals.updateFile) { %>
                             <td class="folder-delete button-td">
                                 <form action="/folder/delete" method="post">
                                     <input value="<%= folder.id %>" name='delFold' hidden>

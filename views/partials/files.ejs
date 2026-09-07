@@ -5,7 +5,7 @@
                 <td class="name"><%= file.name %></td>
                 <td class="date-added"><%= file.uploadTime %></td>
                 <td class="size"><%= file.bytes %></td>
-                <% if (!locals.updateFile) {%>
+                <% if (!locals.updateFile && !locals.updateFolder) {%>
                     <% if (locals.user) {%>
                         <td class="file-delete button-td">
                             <form action="/file/delete" method="post">
@@ -15,11 +15,9 @@
                             </form>
                         </td>
                         <td class="file-update button-td">
-                            <form action="/file/redirect/update" method="post">
-                                <input name="fileId" value="<%= file.id %>" hidden>
-                                <input value="<%= currentFolder.id %>" name='redirectId' hidden>
+                            <a href="/file/<%= currentFolder.id %>/<%= file.id %>">
                                 <button>Update</button>
-                            </form>
+                            </a>
                         </td>
                     <%}%>
                     <td colspan="<%= locals.user ? 1 : 3 %>" class="file-download button-td">

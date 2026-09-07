@@ -1,16 +1,23 @@
-<form method="post" action="/folder/<%= locals.updateFolder ? "update" : "add" %>" >
-    <div>
-        <input name="parentId" value="<%= currentFolder.id %>" hidden>
-        <label>Folder name:</label>
-        <input name="name" 
-            value="<%= locals.updateFolder ? updateFolder.name : "" %>"
-        />
-        <% if (locals.updateFolder) {%>
-            <input name="updateId" value="<%=updateFolder.id%>" hidden>
+<div>
+    <% const folderDesc = locals.updateFolder ? "Update" : "Add" %>
+    <h3><%= folderDesc %> a Folder</h3>
+    <form method="post" action="/folder/<%= folderDesc.toLowerCase() %>" >
+        <div>
+            <input name="parentId" value="<%= currentFolder.id %>" hidden>
+            <label>Folder name:</label>
+            <input name="name"
+                value="<%= locals.updateFolder ? updateFolder.name : "" %>"
+            />
+            <% if (locals.updateFolder) {%>
+                <input name="updateId" value="<%=updateFolder.id%>" hidden>
+            <%}%>
+        </div>
+        <% if (locals.updateFolder) {%> 
+            <a href="/folder/<%= currentFolder.id %>"><button type="button">Cancel</button></a>
         <%}%>
-    </div>
-    <button>Add folder</button>
-    <% if (locals.errors && errors.name) {%>
-        <p class="form-error"><%= errors.name.msg %></p>
-    <%}%>
-</form>
+        <button><%= folderDesc %> folder</button>
+        <% if (locals.errors && errors.name) {%>
+            <p class="form-error"><%= errors.name.msg %></p>
+        <%}%>
+    </form>
+</div>
