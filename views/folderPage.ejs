@@ -7,12 +7,14 @@
 </head>
 <body>
     <%- include('partials/header') %>
-    <% if (!locals.updateFile) {%>
-        <%- include('partials/fileForm') %>
-        <%- include('partials/folderForm') %>
-        <%- include('partials/dateForm') %>
-    <%} else {%>
-        <%- include('partials/updateFile') %>
+    <% if (locals.user) {%> 
+        <% if (!locals.updateFile) {%>
+            <%- include('partials/fileForm') %>
+            <%- include('partials/folderForm') %>
+            <%- include('partials/dateForm') %>
+        <%} else {%>
+            <%- include('partials/updateFile') %>
+        <%}%>
     <%}%>
     <%- include('partials/folder') %>
 </body>

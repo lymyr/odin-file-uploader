@@ -2,9 +2,12 @@
     <div>
         <a href="/"><h1>Odin File Uploader</h1></a>
     </div>
-    <% if (locals.username) {%>
-        <form method="post" action="/logout">
-            <button>Log out</button>
-        </form>
+    <% if (locals.user) {%>
+        <div>
+            <p> <%= user.username %> </p>
+            <form method="post" action="/logout">
+                <button>Log out</button>
+            </form>
+        </div>
     <% }%>
 </header>
