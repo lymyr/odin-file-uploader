@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addFolder, deleteFolder, shareFolder, updateFolder, viewFolder } from "../controllers/folderController.js";
+import { addFolder, deleteFolder, shareFolder, unshareFolder, updateFolder, viewFolder } from "../controllers/folderController.js";
 import isAuth from "../middleware/isAuth.js";
 import isOwner from "../middleware/isOwner.js";
 
@@ -13,5 +13,6 @@ folderRouter.post('/delete', deleteFolder)
 folderRouter.get('/:id/update/:updateId', viewFolder)
 folderRouter.post('/update', updateFolder, viewFolder)
 folderRouter.post('/share', shareFolder, viewFolder)
+folderRouter.post('/unshare', unshareFolder, viewFolder)
 
 export default folderRouter

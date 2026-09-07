@@ -20,32 +20,34 @@
         </tr>
     </thead>
     <tbody>
-        <% for (const folder of currentFolder.child) {%>
-            <% const navLink = locals.updateFolder ? `/folder/${folder.id}/update/${updateFolder.id}` : locals.updateFile ? `/file/${folder.id}/${updateFile.id}` : `/folder/${folder.id}` %>
-            <% const cSpan = locals.updateFolder ? 5 : 3 %>
-            <tr>
-                <% if (locals.updateFolder?.id !== folder.id) { %>
-                    <td  colspan="<%= cSpan %>">
-                        <a href="<%= navLink %>">
-                            <%= folder.name %>
-                        </a>
-                    </td>
-                <%}%>
-                <% if (!locals.updateFolder || !locals.updateFile) { %>
-                    <td>
-                        <form action="/folder/delete" method="post">
-                            <input value="<%= folder.id %>" name='delFold' hidden>
-                            <input value="<%= currentFolder.id %>" name='redirectId' hidden>
-                            <button>Delete</button>
-                        </form>
-                    </td>
-                    <td colspan="2">
-                        <a href="/folder/<%= currentFolder.id %>/update/<%= folder.id %>">
-                            <button>Update</button>
-                        </a>
-                    </td>
-                <%}%>
-            </tr>
+        <% if (currentFolder.child) {%>
+            <% for (const folder of currentFolder.child) {%>
+                <% const navLink = locals.updateFolder ? `/folder/${folder.id}/update/${updateFolder.id}` : locals.updateFile ? `/file/${folder.id}/${updateFile.id}` : `/folder/${folder.id}` %>
+                <% const cSpan = locals.updateFolder ? 5 : 3 %>
+                <tr>
+                    <% if (locals.updateFolder?.id !== folder.id) { %>
+                        <td  colspan="<%= cSpan %>">
+                            <a href="<%= navLink %>">
+                                <%= folder.name %>
+                            </a>
+                        </td>
+                    <%}%>
+                    <% if (!locals.updateFolder || !locals.updateFile) { %>
+                        <td>
+                            <form action="/folder/delete" method="post">
+                                <input value="<%= folder.id %>" name='delFold' hidden>
+                                <input value="<%= currentFolder.id %>" name='redirectId' hidden>
+                                <button>Delete</button>
+                            </form>
+                        </td>
+                        <td colspan="2">
+                            <a href="/folder/<%= currentFolder.id %>/update/<%= folder.id %>">
+                                <button>Update</button>
+                            </a>
+                        </td>
+                    <%}%>
+                </tr>
+            <%}%>
         <%}%>
         <%- include('files') %>
     </tbody>

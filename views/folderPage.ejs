@@ -7,7 +7,6 @@
 </head>
 <body>
     <%- include('partials/header') %>
-    <h1>hello <%= user.username %></h1>
     <% if (!locals.updateFile) {%>
         <%- include('partials/fileForm') %>
         <%- include('partials/folderForm') %>

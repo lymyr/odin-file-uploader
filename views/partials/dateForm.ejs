@@ -1,6 +1,10 @@
 <div>
     <% if (currentFolder.shareLink) {%>
         <p>Public share link: <a href="<%= `${host}/share/${currentFolder.id}` %>"><%= `${host}/share/${currentFolder.id}` %></a></p>
+        <form action="/folder/unshare" method="post">
+            <input value="<%= currentFolder.id %>" name='redirectId' hidden>
+            <button>Make private</button>
+        </form>
     <%}%>
     <!-- todo: should prob add js to get client timezone but eh~ -->
     <form action="/folder/share" method="post">

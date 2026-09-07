@@ -49,7 +49,8 @@ export const viewFolder = async (req, res) => {
         currentFolder: folder, 
         updateFolder: updateFolder,
         errors: req.errors,
-        host: req.host
+        host: req.host,
+        share: req.share
     })
 }
 
@@ -94,8 +95,17 @@ export const shareFolder = [
                 update: { expire: req.body.shareDuration },
                 where: { id:  parseInt(req.body.redirectId) }
             })
+            return (res.redirect(`/folder/${req.body.redirectId}`))
         }
         req.errors = err.mapped()
         next()
     }
 ]
+
+export const unshareFolder = async (req, res, next) => {
+    await prisma.shareLink.delete({
+        where: { id: req.currentFolder.id }
+    })
+    req.currentFolder.shareLink = null
+    next()
+}
