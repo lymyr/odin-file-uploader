@@ -32,7 +32,8 @@ export const viewFolder = async (req, res) => {
         },
         include: {
             child: true,
-            file: true
+            file: true,
+            shareLink: true
         }
     })
     const updateId = req.params.updateId ? req.params.updateId : req.updateId ? req.updateId : null
@@ -47,7 +48,8 @@ export const viewFolder = async (req, res) => {
         user: req.user, 
         currentFolder: folder, 
         updateFolder: updateFolder,
-        errors: req.errors
+        errors: req.errors,
+        host: req.host
     })
 }
 
@@ -77,6 +79,23 @@ export const updateFolder = [
 
         req.errors = err.mapped()
         req.updateId = req.body.updateId
+        next()
+    }
+]
+
+
+export const shareFolder = [
+    folderValidation.shareDate,
+    async (req, res, next) => {
+        const err = validationResult(req)
+        if (err.isEmpty()) {
+            await prisma.shareLink.upsert({
+                create: { id:  parseInt(req.body.redirectId), expire: req.body.shareDuration },
+                update: { expire: req.body.shareDuration },
+                where: { id:  parseInt(req.body.redirectId) }
+            })
+        }
+        req.errors = err.mapped()
         next()
     }
 ]

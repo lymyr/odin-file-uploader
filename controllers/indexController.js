@@ -13,7 +13,7 @@ export const getIndex = [
                 ownerId: req.user.id,
                 parentId: null
             },
-            include: { child: true, file: true }
+            include: { child: true, file: true, shareLink: true }
         })
         req.currentFolder = root
         next()
