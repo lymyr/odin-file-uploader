@@ -12,35 +12,38 @@
     <% const username = (locals.body && body.username) ? body.username : "" %>
     <% const password = (locals.body && body.password) ? body.password : "" %>
 
-    <form method="post" action="/register">
-        <div>
+    <div class="register-form">
+        <form method="post" action="/register">
             <div>
-                <label for="username">Username:</label>
-                <input id="username" name="username" value="<%= username %>">
+                <div>
+                    <label for="username">Username:</label>
+                    <input id="username" name="username" value="<%= username %>">
+                </div>
+                <% if (locals.errors && errors.username) {%>
+                    <p class="form-error"><%= errors.username.msg %></p>
+                <%}%>
             </div>
-            <% if (locals.errors && errors.username) {%>
-                <p class="form-error"><%= errors.username.msg %></p>
-            <%}%>
-        </div>
-        <div>
             <div>
-                <label for="password">Password:</label>
-                <input id="password" name="password" value="<%= password %>">
+                <div>
+                    <label for="password">Password:</label>
+                    <input id="password" name="password" value="<%= password %>" type="password">
+                </div>
+                <% if (locals.errors && errors.password) {%>
+                    <p class="form-error"><%= errors.password.msg %></p>
+                <%}%>
             </div>
-            <% if (locals.errors && errors.password) {%>
-                <p class="form-error"><%= errors.password.msg %></p>
-            <%}%>
-        </div>
-        <div>
             <div>
-                <label for="cpassword">Confirm Password:</label>
-                <input id="cpassword" name="cpassword">
+                <div>
+                    <label for="cpassword">Confirm Password:</label>
+                    <input id="cpassword" name="cpassword" type="password">
+                </div>
+                <% if (locals.errors && errors.cpassword) {%>
+                    <p class="form-error"><%= errors.cpassword.msg %></p>
+                <%}%>
             </div>
-            <% if (locals.errors && errors.cpassword) {%>
-                <p class="form-error"><%= errors.cpassword.msg %></p>
-            <%}%>
-        </div>
-        <button>Submit</button>
-    </form>
+            <button>Register</button>
+            <p>Already have an account? Sign in <a href="/">here</a></p>
+        </form>
+    </div>
 </body>
 </html>

@@ -148,6 +148,41 @@ td.name a {
     font-size: 1.2rem
 }
 
+.register-form p,
+.login-form p {
+    max-width: 200px;
+}
+
+.register-form button,
+.login-form button {
+    max-width: 200px;
+}
+
+.register-form,
+.login-form {
+    padding-inline: var(--inline-space);
+    padding-block: 32px;
+    border-radius: 4px;
+    box-shadow: 1px 1px 4px rgb(211, 211, 211);
+    width: fit-content;
+    margin: auto;
+    background-color: white;
+}
+
+.register-form form,
+.login-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.register-form div > div,
+.login-form div > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
 @media screen and (max-width: 1200px) { 
     .form-wrapper > div:last-child {
         grid-column: 1/3;

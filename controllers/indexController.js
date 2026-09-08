@@ -51,14 +51,15 @@ export const login = [
     usernamePasswordValidation.loginValidation,
     async (req, res, next) => {
         const errs = validationResult(req)
-        if (errs.isEmpty())
-            return next()
-        res.render('index', {errors: errs.mapped(), body: req.body})
+        if (!errs.isEmpty())
+            return res.render('index', {errors: errs.mapped(), body: req.body })
+        next()
     },
     passport.authenticate('local', {
         failureRedirect: '/',
-        successRedirect: '/'
-    })
+        successRedirect: '/',
+        failureMessage: true
+    }),
 ]
 
 export const logout = (req, res, next) => {
