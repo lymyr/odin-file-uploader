@@ -24,8 +24,3 @@ export const checkDate = async (req, res, next) => {
     req.share = true
     next()
 }
-
-// todo: add shared folder not found/has expired
-export const shareError = (err, req, res, next) => {
-    res.send(err)
-}

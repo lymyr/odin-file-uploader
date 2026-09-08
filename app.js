@@ -23,6 +23,7 @@ app.use('/', indexRouter)
 app.use('/folder', folderRouter)
 app.use('/file', fileRouter)
 app.use('/share', shareRouter)
+app.use((err, req, res, next) => res.render('errorPage', {error: err}))
 
 app.listen(process.env.PORT, () => {
     console.log("Listening to " + process.env.PORT)

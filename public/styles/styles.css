@@ -135,6 +135,18 @@ td.name a {
     font-weight: 600;
 }
 
+.error-container {
+    margin-top: 20vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:24px;
+    padding-inline: var(--inline-space);
+}
+
+.error-container p {
+    font-size: 1.2rem
+}
 
 @media screen and (max-width: 1200px) { 
     .form-wrapper > div:last-child {
