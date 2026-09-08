@@ -29,10 +29,3 @@ export const checkDate = async (req, res, next) => {
 export const shareError = (err, req, res, next) => {
     res.send(err)
 }
-
-
-
-// todo: add remove share link
-export const removeShare = (req, res) => {
-
-}
