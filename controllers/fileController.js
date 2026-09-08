@@ -4,24 +4,28 @@ import { fileVadiation } from "../lib/validations.js"
 import { validationResult } from "express-validator"
 import cloudinary from "../lib/cloudinary.js"
 import { Readable } from "node:stream"
+import pLimit from "p-limit"
 
 
 export const uploadFile = async (req, res) => {
     if (req.files.length == 0)
         throw new Error("Please upload a file")
-
+    
+    const limit = pLimit(10)
     const uploadedFiles = await Promise.all(req.files.map(file => {
-        return new Promise((resolve, reject) => {
-            cloudinary.uploader.upload_stream({
-                resource_type: "raw",
-                asset_folder: "/odin_file_uploader",
-                type: 'private',
-            },
-            (error, result) => {
-                if (error)
-                    return reject(error)
-                return resolve(result)
-            }).end(file.buffer)
+        return limit(async () => {
+            return new Promise((resolve, reject) => {
+                cloudinary.uploader.upload_stream({
+                    resource_type: "raw",
+                    asset_folder: "/odin_file_uploader",
+                    type: 'private',
+                },
+                (error, result) => {
+                    if (error)
+                        return reject(error)
+                    return resolve(result)
+                }).end(file.buffer)
+            })
         })
     }))
 
