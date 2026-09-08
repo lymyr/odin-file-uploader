@@ -1,28 +1,41 @@
 import { prisma } from "../lib/prisma.js"
-import path from "node:path"
 import { deleteFileTask } from "../lib/helpers.js"
 import { fileVadiation } from "../lib/validations.js"
 import { validationResult } from "express-validator"
+import cloudinary from "../lib/cloudinary.js"
+import { Readable } from "node:stream"
+
 
 export const uploadFile = async (req, res) => {
     if (req.files.length == 0)
         throw new Error("Please upload a file")
 
-    const fileList = req.files.map(file => {
-        if (file.originalname.length > 200)
-            throw new Error("File name must not exceed 200 characters")
+    const uploadedFiles = await Promise.all(req.files.map(file => {
+        return new Promise((resolve, reject) => {
+            cloudinary.uploader.upload_stream({
+                resource_type: "raw",
+                asset_folder: "/odin_file_uploader",
+                type: 'private',
+            },
+            (error, result) => {
+                if (error)
+                    return reject(error)
+                return resolve(result)
+            }).end(file.buffer)
+        })
+    }))
+
+    const fileList = uploadedFiles.map((file, i) => {
         return {
-            path: file.destination,
-            id: file.filename,
-            name: file.originalname,
-            bytes: parseInt(file.size),
+            path: "placeholder for testing", // todo: migration remove
+            id: file.public_id,
+            name: req.files[i].originalname,
+            bytes: file.bytes,
             folderId: parseInt(req.body.parentId)
         }
     })
 
-    await prisma.file.createMany({
-        data: fileList
-    })
+    await prisma.file.createMany({data: fileList})
 
     res.redirect(`/folder/${req.body.parentId}`)
 }
@@ -33,7 +46,26 @@ export const deleteFile = async (req, res) => {
 }
 
 export const downloadFile = async (req, res) => {
-    res.download(`${path.join(import.meta.dirname, `../uploads/${req.body.fileId}`)}`, req.body.fileName)
+    const downloadLink = cloudinary.utils.private_download_url(req.body.fileId, "", {
+        resource_type: "raw",
+        type: "private",
+        attachment: true,
+    })
+
+    const downloadedFile = await fetch(downloadLink)
+    if (!downloadedFile.ok)
+        throw new Error("Failed fetching from cloudinary")
+
+    res.setHeader(
+        'Content-Disposition',
+        `attachment; filename=${req.body.fileName}`
+    )
+    const cType = downloadedFile.headers.get('content-type')
+    const cLength = downloadedFile.headers.get('content-length')
+    if (cType) res.setHeader('Content-Type', cType)
+    if (cLength) res.setHeader('Content-Length', cLength)
+    
+    return Readable.fromWeb(downloadedFile.body).pipe(res)
 }
 
 export const viewUpdate = async (req, res, next) => {
