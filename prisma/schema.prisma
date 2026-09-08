@@ -32,7 +32,6 @@ model File {
   uploadTime DateTime @default(now())
   folderId   Int
   bytes      Int
-  path       String
   folder     Folder   @relation(fields: [folderId], references: [id])
 }
 

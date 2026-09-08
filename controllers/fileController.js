@@ -31,7 +31,6 @@ export const uploadFile = async (req, res) => {
 
     const fileList = uploadedFiles.map((file, i) => {
         return {
-            path: "placeholder for testing", // todo: migration remove
             id: file.public_id,
             name: req.files[i].originalname,
             bytes: file.bytes,
