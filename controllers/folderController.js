@@ -3,6 +3,8 @@ import { deleteFolder as helperDeleteFolder } from "../lib/helpers.js"
 import { folderValidation } from "../lib/validations.js"
 import { validationResult } from "express-validator"
 
+process.loadEnvFile()
+
 export const addFolder = [
     folderValidation.validName,
     async (req, res, next) => {
@@ -50,7 +52,8 @@ export const viewFolder = async (req, res) => {
         updateFolder: updateFolder,
         errors: req.errors,
         host: req.host,
-        share: req.share
+        share: req.share,
+        httpShareLink: process.env.ENVI === 'dev' ? "http://" : "https://"
     })
 }
 

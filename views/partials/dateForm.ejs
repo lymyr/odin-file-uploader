@@ -4,7 +4,7 @@
         <% if (currentFolder.shareLink) {%>
             <div>
                 <p>Public share link:</p>
-                <a class='share-link' href="<%= `${host}/share/${currentFolder.id}` %>"><%= `${host}/share/${currentFolder.id}` %></a>
+                <a class='share-link' href="<%= `${httpShareLink}${host}/share/${currentFolder.id}` %>"><%= `${httpShareLink}${host}/share/${currentFolder.id}` %></a>
                 <form action="/folder/unshare" method="post">
                     <input value="<%= currentFolder.id %>" name='redirectId' hidden>
                     <button id="make-priv-btn">Make private</button>
