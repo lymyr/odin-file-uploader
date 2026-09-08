@@ -10,4 +10,4 @@
 ## dev setup
 - `touch .env`
 - `check env.example and put in required stuffs`
-- `node app.js`
+- `npm run dev-set`

@@ -5,7 +5,9 @@
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-set": "npm install && npx prisma migrate dev && npx prisma generate",
+    "deploy": "npm install && npx prisma migrate deploy && npx prisma generate"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",
